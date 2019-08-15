@@ -9,9 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.GlideBuilder;
+import com.bumptech.glide.request.RequestOptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import omari.hamza.android_mvvm_demo.R;
@@ -37,10 +36,15 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull PlacesAdapter.MyViewHolder viewHolder, int i) {
+        viewHolder.mBinding.setPlace(places.get(i));
         viewHolder.mBinding.imageName.setText(places.get(i).getName());
+        // Set the image
+        RequestOptions defaultOptions = new RequestOptions()
+                .error(R.drawable.ic_launcher_background);
         Glide.with(mContext)
-        .load(places.get(i).getImageUrl())
-        .into(viewHolder.mBinding.image);
+                .setDefaultRequestOptions(defaultOptions)
+                .load(places.get(i).getImageUrl())
+                .into(viewHolder.mBinding.image);
     }
 
     @Override
@@ -48,11 +52,11 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
         return places.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder{
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
         LayoutListitemBinding mBinding;
 
-        public MyViewHolder(@NonNull View itemView) {
+        MyViewHolder(@NonNull View itemView) {
             super(itemView);
             mBinding = DataBindingUtil.bind(itemView);
         }
